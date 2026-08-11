@@ -19,7 +19,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenConsultation }) => {
   ];
 
   return (
-    <header className="absolute top-0 left-0 right-0 z-50 bg-flow-cream border-b border-flow-border/80 py-3">
+    <header className="sticky top-0 left-0 right-0 z-50 bg-flow-cream shadow-subtle border-b border-flow-border/80 py-3 transition-none">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
         {/* Brand Logo & Name */}
         <Link to="/" className="flex items-center space-x-3 group">
