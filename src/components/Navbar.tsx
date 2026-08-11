@@ -19,8 +19,8 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenConsultation }) => {
   ];
 
   return (
-    <header className="sticky top-0 left-0 right-0 z-50 bg-flow-cream shadow-subtle border-b border-flow-border/80 py-3 transition-none">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
+    <header className="sticky top-0 left-0 right-0 z-50 bg-flow-cream shadow-subtle border-b border-flow-border/80 py-3 before:absolute before:inset-x-0 before:-top-64 before:h-64 before:bg-flow-cream before:pointer-events-none">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between relative z-10">
         {/* Brand Logo & Name */}
         <Link to="/" className="flex items-center space-x-3 group">
           {/* Logo container bg strictly matches solid bg-flow-cream navbar */}
@@ -88,7 +88,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenConsultation }) => {
 
       {/* Mobile / Tablet Drawer Menu */}
       {mobileMenuOpen && (
-        <div className="lg:hidden bg-flow-dark text-white border-b border-flow-border-dark animate-fadeIn">
+        <div className="lg:hidden bg-flow-dark text-white border-b border-flow-border-dark animate-fadeIn relative z-10">
           <div className="px-6 pt-4 pb-6 space-y-3">
             {navLinks.map((link) => (
               <Link
