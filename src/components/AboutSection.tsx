@@ -29,12 +29,12 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ onOpenConsultation }
               />
             </div>
 
-            {/* Overlay Badge */}
-            <div className="absolute -bottom-4 -right-2 sm:-bottom-6 sm:-right-6 hidden sm:block bg-flow-dark text-white p-4 sm:p-6 border border-flow-gold/40 shadow-luxury max-w-[240px] sm:max-w-xs z-10">
-              <p className="text-sm sm:text-base font-extrabold text-flow-gold mb-1">
+            {/* Overlay Badge — Visible on ALL mobile, tablet, and desktop viewports */}
+            <div className="mt-3 sm:mt-0 sm:absolute sm:-bottom-6 sm:-right-6 bg-flow-dark text-white p-3.5 sm:p-5 border border-flow-gold/40 shadow-luxury max-w-full sm:max-w-xs z-10">
+              <p className="text-xs sm:text-base font-extrabold text-flow-gold mb-0.5">
                 {companyConfig.legalName}
               </p>
-              <p className="text-[10px] sm:text-xs text-white/70">
+              <p className="text-[10px] sm:text-xs text-white/80 font-bold uppercase tracking-wider">
                 {companyConfig.rcNumber} — CAC Registered
               </p>
             </div>

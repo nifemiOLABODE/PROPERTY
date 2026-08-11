@@ -2,7 +2,6 @@ import React from 'react';
 import { Hero } from '../components/Hero';
 import { TrustStats } from '../components/TrustStats';
 import { FeaturedProperties } from '../components/FeaturedProperties';
-import { AboutSection } from '../components/AboutSection';
 import { MissionSection } from '../components/MissionSection';
 import { ServicesSection } from '../components/ServicesSection';
 import { WhyChooseUs } from '../components/WhyChooseUs';
@@ -21,7 +20,6 @@ export const HomePage: React.FC<HomePageProps> = ({ onSelectProperty, onOpenCons
       <Hero onOpenConsultation={onOpenConsultation} />
       <TrustStats />
       <FeaturedProperties onSelectProperty={onSelectProperty} />
-      <AboutSection onOpenConsultation={onOpenConsultation} />
       <MissionSection />
       <ServicesSection onOpenConsultation={onOpenConsultation} />
       <WhyChooseUs />
