@@ -10,6 +10,7 @@ import { PropertiesPage } from './pages/PropertiesPage';
 import { AboutPage } from './pages/AboutPage';
 import { ServicesPage } from './pages/ServicesPage';
 import { ContactPage } from './pages/ContactPage';
+import { WhatsAppButton } from './components/WhatsAppButton';
 import { Property } from './types';
 
 // Scroll to top helper on route change
@@ -89,6 +90,9 @@ export function AppContent() {
           </Routes>
         </PageTransition>
       </div>
+
+      {/* Floating WhatsApp Button */}
+      <WhatsAppButton />
 
       {/* Footer */}
       <Footer />
