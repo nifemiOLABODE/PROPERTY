@@ -13,12 +13,8 @@ export const companyConfig: CompanyConfig = {
   email: "info@flowproperty.ng",
   addresses: [
     {
-      label: "Durumi Office",
-      address: "Plot 22 Isah Mohammed Road, Durumi District, Abuja"
-    },
-    {
-      label: "Gudu Office",
-      address: "13 Isah Mohammed Road, Gudu, Abuja 900110, Federal Capital Territory, Nigeria"
+      label: "Abuja Office",
+      address: "Plot 22, 13 Isah Mohammed Road, Gudu / Durumi District, Abuja 900110, Federal Capital Territory, Nigeria"
     }
   ],
   businessHours: "Monday – Saturday: 8:00 AM – 6:00 PM (WAT)",

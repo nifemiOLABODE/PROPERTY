@@ -105,7 +105,7 @@ export const Footer: React.FC = () => {
           {/* Contact Info Column */}
           <div className="lg:col-span-3 space-y-3">
             <h4 className="text-xs font-extrabold text-flow-gold uppercase tracking-wider">
-              Abuja Offices
+              Abuja Office
             </h4>
             <div className="space-y-3 text-xs text-white/80">
               {companyConfig.addresses.map((addr, idx) => (

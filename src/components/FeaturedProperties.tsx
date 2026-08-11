@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { MapPin, Bed, Bath, Maximize2, ArrowRight } from 'lucide-react';
 import { sampleProperties } from '../data/propertiesData';
 import { Property } from '../types';
@@ -28,7 +29,7 @@ export const FeaturedProperties: React.FC<FeaturedPropertiesProps> = ({ onSelect
             <span className="text-xs font-bold uppercase tracking-widest text-flow-gold block mb-2">
               CURATED PORTFOLIO
             </span>
-            <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-flow-dark tracking-tight">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-flow-dark tracking-tight">
               Selected Properties
             </h2>
             <p className="mt-3 max-w-xl text-sm sm:text-base text-flow-muted font-light">
@@ -84,7 +85,7 @@ export const FeaturedProperties: React.FC<FeaturedPropertiesProps> = ({ onSelect
                     <span>{property.location}</span>
                   </div>
 
-                  <h3 className="font-serif text-xl font-bold text-flow-dark mb-3 line-clamp-2 group-hover:text-flow-gold transition-colors">
+                  <h3 className="text-xl font-bold text-flow-dark mb-3 line-clamp-2 group-hover:text-flow-gold transition-colors">
                     {property.title}
                   </h3>
 
@@ -111,7 +112,7 @@ export const FeaturedProperties: React.FC<FeaturedPropertiesProps> = ({ onSelect
                   {/* Price */}
                   <div className="flex items-baseline justify-between">
                     <span className="text-[11px] uppercase tracking-wider text-flow-muted">Guide Price</span>
-                    <span className="font-serif text-xl font-bold text-flow-dark">
+                    <span className="text-xl font-bold text-flow-dark">
                       {property.price}
                     </span>
                   </div>
@@ -132,15 +133,15 @@ export const FeaturedProperties: React.FC<FeaturedPropertiesProps> = ({ onSelect
           ))}
         </div>
 
-        {/* View All Properties Bottom Action */}
+        {/* View All Properties Bottom Action — Links to /properties */}
         <div className="mt-16 text-center">
-          <button
-            onClick={() => setActiveFilter('All')}
+          <Link
+            to="/properties"
             className="inline-flex items-center space-x-3 px-8 py-4 bg-flow-dark hover:bg-flow-gold text-white text-xs uppercase font-semibold tracking-widest transition-all shadow-subtle"
           >
             <span>View All Properties</span>
             <ArrowRight className="w-4 h-4" />
-          </button>
+          </Link>
         </div>
       </div>
     </section>
