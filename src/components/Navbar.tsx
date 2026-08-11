@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, X, ChevronRight } from 'lucide-react';
 
@@ -7,17 +7,8 @@ interface NavbarProps {
 }
 
 export const Navbar: React.FC<NavbarProps> = ({ onOpenConsultation }) => {
-  const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const location = useLocation();
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
 
   const navLinks = [
     { name: 'Home', path: '/' },
@@ -28,27 +19,21 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenConsultation }) => {
   ];
 
   return (
-    <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled
-          ? 'bg-flow-cream/95 backdrop-blur-md shadow-subtle border-b border-flow-border/80 py-3'
-          : 'bg-flow-cream/90 backdrop-blur-sm border-b border-flow-border/50 py-3.5'
-      }`}
-    >
+    <header className="fixed top-0 left-0 right-0 z-50 bg-flow-cream shadow-subtle border-b border-flow-border/80 py-3 transition-none">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
         {/* Brand Logo & Name */}
         <Link to="/" className="flex items-center space-x-3 group">
-          {/* Logo Container - Seamless blending with navbar bg */}
-          <div className="h-10 w-10 sm:h-12 sm:w-12 bg-transparent flex items-center justify-center overflow-hidden flex-shrink-0">
+          {/* Logo container bg strictly matches solid bg-flow-cream navbar */}
+          <div className="h-11 w-11 sm:h-13 sm:w-13 bg-flow-cream flex items-center justify-center overflow-hidden flex-shrink-0">
             <img
               src="/logo.jpg"
               alt="FLOW REALTOR & Properties Limited Logo"
-              className="h-full w-full object-contain mix-blend-multiply filter contrast-125 saturate-110 block"
+              className="h-full w-full object-contain mix-blend-multiply block"
             />
           </div>
 
           <div className="flex flex-col">
-            <span className="text-base sm:text-lg font-extrabold tracking-wider uppercase leading-none text-flow-dark">
+            <span className="text-base sm:text-lg md:text-xl font-extrabold tracking-wider uppercase leading-none text-flow-dark">
               FLOW REALTOR
             </span>
             <span className="text-[10px] sm:text-xs tracking-widest uppercase font-bold mt-1 leading-none text-flow-gold">
