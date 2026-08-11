@@ -14,13 +14,11 @@ export const PropertiesPage: React.FC<PropertiesPageProps> = ({ onSelectProperty
   const [activeCategory, setActiveCategory] = useState<'All' | 'Abuja' | 'Lagos' | 'Residential' | 'Land'>('All');
 
   const filteredProperties = sampleProperties.filter((property) => {
-    // Category pill filter
     if (activeCategory === 'Abuja' && property.city !== 'Abuja') return false;
     if (activeCategory === 'Lagos' && property.city !== 'Lagos') return false;
     if (activeCategory === 'Residential' && property.type !== 'Residential' && property.type !== 'Luxury Residence') return false;
     if (activeCategory === 'Land' && property.type !== 'Land') return false;
 
-    // Search bar filter
     if (searchTerm.trim() !== '') {
       const term = searchTerm.toLowerCase();
       const matchTitle = property.title.toLowerCase().includes(term);
@@ -30,10 +28,7 @@ export const PropertiesPage: React.FC<PropertiesPageProps> = ({ onSelectProperty
       if (!matchTitle && !matchLocation && !matchDescription && !matchType) return false;
     }
 
-    // City dropdown
     if (selectedCity !== 'All' && property.city !== selectedCity) return false;
-
-    // Type dropdown
     if (selectedType !== 'All' && property.type !== selectedType) return false;
 
     return true;
@@ -47,15 +42,15 @@ export const PropertiesPage: React.FC<PropertiesPageProps> = ({ onSelectProperty
   };
 
   return (
-    <div className="pt-28 pb-24 bg-flow-cream min-h-screen">
+    <div className="py-12 sm:py-16 bg-flow-cream min-h-screen">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Page Banner Header */}
-        <div className="mb-12 text-center max-w-3xl mx-auto">
-          <span className="text-xs font-bold uppercase tracking-widest text-flow-gold block mb-2">
+        <div className="mb-10 sm:mb-12 text-center max-w-3xl mx-auto">
+          <span className="text-xs font-extrabold uppercase tracking-widest text-flow-gold block mb-2">
             PREMIUM REAL ESTATE PORTFOLIO
           </span>
-          <h1 className="font-serif text-3xl sm:text-5xl font-bold text-flow-dark tracking-tight mb-4">
+          <h1 className="text-3xl sm:text-5xl font-extrabold text-flow-dark tracking-tight mb-4">
             Abuja & Lagos Properties
           </h1>
           <p className="text-sm sm:text-base text-flow-muted font-light leading-relaxed">
@@ -188,7 +183,7 @@ export const PropertiesPage: React.FC<PropertiesPageProps> = ({ onSelectProperty
                       <span>{property.location}</span>
                     </div>
 
-                    <h3 className="font-serif text-xl font-bold text-flow-dark mb-3 line-clamp-2 group-hover:text-flow-gold transition-colors">
+                    <h3 className="text-xl font-bold text-flow-dark mb-3 line-clamp-2 group-hover:text-flow-gold transition-colors">
                       {property.title}
                     </h3>
 
@@ -215,7 +210,7 @@ export const PropertiesPage: React.FC<PropertiesPageProps> = ({ onSelectProperty
                     {/* Price */}
                     <div className="flex items-baseline justify-between">
                       <span className="text-[11px] uppercase tracking-wider text-flow-muted">Guide Price</span>
-                      <span className="font-serif text-xl font-bold text-flow-dark">
+                      <span className="text-xl font-bold text-flow-dark">
                         {property.price}
                       </span>
                     </div>
@@ -238,7 +233,7 @@ export const PropertiesPage: React.FC<PropertiesPageProps> = ({ onSelectProperty
         ) : (
           <div className="text-center py-16 bg-white border border-flow-border p-8">
             <Filter className="w-10 h-10 text-flow-muted mx-auto mb-4 opacity-50" />
-            <h3 className="font-serif text-2xl font-bold text-flow-dark mb-2">No Matching Properties Found</h3>
+            <h3 className="text-2xl font-bold text-flow-dark mb-2">No Matching Properties Found</h3>
             <p className="text-xs sm:text-sm text-flow-muted max-w-md mx-auto mb-6">
               We couldn't find any properties matching your current search parameters. Try adjusting your keyword or clearing filters.
             </p>

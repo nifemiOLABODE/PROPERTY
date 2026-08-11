@@ -8,7 +8,7 @@ interface HeroProps {
 
 export const Hero: React.FC<HeroProps> = ({ onOpenConsultation }) => {
   return (
-    <section id="hero" className="relative min-h-[85vh] sm:min-h-[90vh] lg:min-h-screen flex items-center justify-center pt-24 sm:pt-28 pb-16 sm:pb-20 overflow-hidden bg-flow-dark text-white">
+    <section id="hero" className="relative min-h-[85vh] sm:min-h-[90vh] flex items-center justify-center py-16 sm:py-24 overflow-hidden bg-flow-dark text-white">
       {/* Background Image with Overlay */}
       <div className="absolute inset-0 z-0">
         <img
@@ -21,7 +21,7 @@ export const Hero: React.FC<HeroProps> = ({ onOpenConsultation }) => {
       </div>
 
       {/* Hero Content */}
-      <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center pt-6 sm:pt-10">
+      <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center my-auto">
         {/* Main Headline */}
         <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-white leading-tight mb-4 sm:mb-6">
           Find Property. Build Wealth.<br className="hidden sm:inline" />
