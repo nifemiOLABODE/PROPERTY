@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { Navbar } from './components/Navbar';
 import { Footer } from './components/Footer';
+import { PageTransition } from './components/PageTransition';
 import { PropertyModal } from './components/PropertyModal';
 import { ConsultationModal } from './components/ConsultationModal';
 import { HomePage } from './pages/HomePage';
@@ -44,47 +45,49 @@ export function AppContent() {
       {/* Navigation */}
       <Navbar onOpenConsultation={() => handleOpenConsultation()} />
 
-      {/* Routes */}
+      {/* Routes with Page Transition */}
       <div className="flex-grow">
-        <Routes>
-          <Route
-            path="/"
-            element={
-              <HomePage
-                onSelectProperty={(prop) => setSelectedProperty(prop)}
-                onOpenConsultation={() => handleOpenConsultation()}
-              />
-            }
-          />
-          <Route
-            path="/properties"
-            element={
-              <PropertiesPage
-                onSelectProperty={(prop) => setSelectedProperty(prop)}
-              />
-            }
-          />
-          <Route
-            path="/about"
-            element={
-              <AboutPage
-                onOpenConsultation={() => handleOpenConsultation()}
-              />
-            }
-          />
-          <Route
-            path="/services"
-            element={
-              <ServicesPage
-                onOpenConsultation={() => handleOpenConsultation()}
-              />
-            }
-          />
-          <Route
-            path="/contact"
-            element={<ContactPage />}
-          />
-        </Routes>
+        <PageTransition>
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <HomePage
+                  onSelectProperty={(prop) => setSelectedProperty(prop)}
+                  onOpenConsultation={() => handleOpenConsultation()}
+                />
+              }
+            />
+            <Route
+              path="/properties"
+              element={
+                <PropertiesPage
+                  onSelectProperty={(prop) => setSelectedProperty(prop)}
+                />
+              }
+            />
+            <Route
+              path="/about"
+              element={
+                <AboutPage
+                  onOpenConsultation={() => handleOpenConsultation()}
+                />
+              }
+            />
+            <Route
+              path="/services"
+              element={
+                <ServicesPage
+                  onOpenConsultation={() => handleOpenConsultation()}
+                />
+              }
+            />
+            <Route
+              path="/contact"
+              element={<ContactPage />}
+            />
+          </Routes>
+        </PageTransition>
       </div>
 
       {/* Footer */}
