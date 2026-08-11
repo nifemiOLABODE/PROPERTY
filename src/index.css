@@ -3,13 +3,14 @@
 @tailwind utilities;
 
 @layer base {
-  html, body {
+  html {
     color-scheme: light;
+  }
+
+  body {
     background-color: #FAF9F6;
     color: #0D1117;
     font-family: 'Plus Jakarta Sans', Inter, sans-serif;
-    overflow-x: hidden;
-    overscroll-behavior-y: none; /* Prevents mobile rubberband elastic bounce gaps above sticky header */
   }
 
   h1, h2, h3, h4, .font-serif-heading {
