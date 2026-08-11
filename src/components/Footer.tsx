@@ -20,20 +20,20 @@ export const Footer: React.FC = () => {
           
           {/* Brand Info Column */}
           <div className="lg:col-span-4 space-y-4">
-            <Link to="/" className="flex items-center space-x-4 group">
-              {/* Prominent Image Logo */}
-              <div className="h-16 w-16 sm:h-20 sm:w-20 md:h-24 md:w-24 bg-white p-1.5 flex items-center justify-center overflow-hidden flex-shrink-0 shadow-md">
+            <Link to="/" className="flex items-center space-x-3.5 group">
+              {/* Image Logo */}
+              <div className="h-12 w-12 sm:h-14 sm:w-14 bg-white p-1 flex items-center justify-center overflow-hidden flex-shrink-0 shadow-md">
                 <img 
-                  src="/photo_2026-08-11_00-09-34.jpg" 
+                  src="/logo.jpg" 
                   alt="FLOW REALTOR & Properties Limited Logo" 
                   className="h-full w-full object-contain"
                 />
               </div>
               <div className="flex flex-col">
-                <span className="text-xl sm:text-2xl font-extrabold text-white tracking-wider uppercase leading-tight">
+                <span className="text-xl sm:text-2xl font-extrabold text-white tracking-wider uppercase leading-none">
                   FLOW REALTOR
                 </span>
-                <span className="text-xs sm:text-sm tracking-widest uppercase font-extrabold text-flow-gold mt-1 leading-none">
+                <span className="text-[10px] sm:text-xs tracking-widest uppercase font-bold text-flow-gold mt-1 leading-none">
                   & PROPERTIES LIMITED
                 </span>
               </div>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, X, ChevronRight } from 'lucide-react';
 
@@ -7,8 +7,17 @@ interface NavbarProps {
 }
 
 export const Navbar: React.FC<NavbarProps> = ({ onOpenConsultation }) => {
+  const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const location = useLocation();
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 20);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const navLinks = [
     { name: 'Home', path: '/' },
@@ -19,14 +28,20 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenConsultation }) => {
   ];
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-flow-cream shadow-subtle border-b border-flow-border/80 py-2.5 sm:py-3 transition-colors">
+    <header
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        isScrolled
+          ? 'bg-flow-cream/95 backdrop-blur-md shadow-subtle border-b border-flow-border/80 py-3'
+          : 'bg-flow-cream/90 backdrop-blur-sm border-b border-flow-border/50 py-3.5'
+      }`}
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
         {/* Brand Logo & Name */}
         <Link to="/" className="flex items-center space-x-3 group">
-          {/* Logo Container - Fits sleekly within standard navbar height */}
-          <div className="h-10 w-10 sm:h-12 sm:w-12 bg-flow-cream flex items-center justify-center overflow-hidden flex-shrink-0">
+          {/* Logo Container - Seamless blending with navbar bg */}
+          <div className="h-10 w-10 sm:h-12 sm:w-12 bg-transparent flex items-center justify-center overflow-hidden flex-shrink-0">
             <img
-              src="/photo_2026-08-11_00-09-34.jpg"
+              src="/logo.jpg"
               alt="FLOW REALTOR & Properties Limited Logo"
               className="h-full w-full object-contain mix-blend-multiply filter contrast-125 saturate-110 block"
             />
@@ -36,7 +51,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenConsultation }) => {
             <span className="text-base sm:text-lg font-extrabold tracking-wider uppercase leading-none text-flow-dark">
               FLOW REALTOR
             </span>
-            <span className="text-[10px] sm:text-xs tracking-widest uppercase font-extrabold mt-1 leading-none text-flow-gold">
+            <span className="text-[10px] sm:text-xs tracking-widest uppercase font-bold mt-1 leading-none text-flow-gold">
               & PROPERTIES LIMITED
             </span>
           </div>

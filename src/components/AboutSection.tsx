@@ -23,7 +23,7 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ onOpenConsultation }
           <div className="lg:col-span-6 relative order-2 lg:order-1">
             <div className="relative w-full max-w-md mx-auto lg:max-w-none bg-white p-3 sm:p-5 border border-flow-border shadow-elevated">
               <img
-                src="/photo_2026-08-11_01-03-15.jpg"
+                src="/cac-certificate.jpg"
                 alt="FLOW REALTOR AND PROPERTY LIMITED - Certificate of Incorporation - RC 9618247"
                 className="w-full h-auto object-contain block border border-flow-border/40"
               />
