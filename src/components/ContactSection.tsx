@@ -16,14 +16,30 @@ export const ContactSection: React.FC = () => {
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
 
-    setTimeout(() => {
+    try {
+      const response = await fetch('https://formspree.io/f/xqpzbpgg', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify(formData)
+      });
+
+      if (response.ok) {
+        setSubmitted(true);
+      } else {
+        alert('Oops! There was a problem submitting your form. Please try again.');
+      }
+    } catch (error) {
+      alert('Oops! There was a network error. Please try again.');
+    } finally {
       setLoading(false);
-      setSubmitted(true);
-    }, 800);
+    }
   };
 
   const whatsappMessage = encodeURIComponent(

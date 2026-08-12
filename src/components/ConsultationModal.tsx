@@ -20,12 +20,34 @@ export const ConsultationModal: React.FC<ConsultationModalProps> = ({ isOpen, on
   });
 
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   if (!isOpen) return null;
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
+    setLoading(true);
+
+    try {
+      const response = await fetch('https://formspree.io/f/xqpzbpgg', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify(formData)
+      });
+
+      if (response.ok) {
+        setSubmitted(true);
+      } else {
+        alert('Oops! There was a problem scheduling your consultation. Please try again.');
+      }
+    } catch (error) {
+      alert('Oops! There was a network error. Please try again.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   const whatsappMessage = encodeURIComponent(
@@ -174,9 +196,10 @@ export const ConsultationModal: React.FC<ConsultationModalProps> = ({ isOpen, on
               <div className="pt-2 flex flex-col gap-3">
                 <button
                   type="submit"
-                  className="w-full py-3 bg-flow-gold hover:bg-flow-gold-hover text-white text-xs uppercase font-semibold tracking-widest transition-all"
+                  disabled={loading}
+                  className="w-full py-3 bg-flow-gold hover:bg-flow-gold-hover text-white text-xs uppercase font-semibold tracking-widest transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  Confirm Consultation Slot
+                  {loading ? 'Scheduling...' : 'Confirm Consultation Slot'}
                 </button>
 
                 <div className="text-center py-1">
