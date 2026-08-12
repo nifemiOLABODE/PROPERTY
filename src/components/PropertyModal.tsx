@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { X, MapPin, Bed, Bath, Maximize2, CheckCircle2, MessageSquare, ChevronRight, Play, Film } from 'lucide-react';
+import React from 'react';
+import { X, MapPin, CheckCircle2, MessageSquare, ChevronRight } from 'lucide-react';
 import { Property } from '../types';
 import { companyConfig } from '../data/companyData';
 
@@ -10,12 +10,7 @@ interface PropertyModalProps {
 }
 
 export const PropertyModal: React.FC<PropertyModalProps> = ({ property, onClose, onOpenConsultationWithProperty }) => {
-  const [activeMediaTab, setActiveMediaTab] = useState<'video' | 'image'>('video');
-  const [activeImageIndex, setActiveImageIndex] = useState(0);
-
   if (!property) return null;
-
-  const currentImage = property.galleryImages[activeImageIndex] || property.mainImage;
 
   const whatsappMessage = encodeURIComponent(
     `Hello Flow Properties, I am interested in reviewing details for "${property.title}" located in ${property.location} (Listed at ${property.price}). Please share further information.`
@@ -35,40 +30,12 @@ export const PropertyModal: React.FC<PropertyModalProps> = ({ property, onClose,
         </button>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-0">
-          {/* Left Column: Video & Image Showcase */}
+          {/* Left Column: Property Video Media */}
           <div className="lg:col-span-7 bg-flow-sand p-4 sm:p-6 flex flex-col justify-between">
             <div>
-              {/* Media Mode Tabs */}
-              {property.videoUrl && (
-                <div className="flex space-x-2 mb-3">
-                  <button
-                    onClick={() => setActiveMediaTab('video')}
-                    className={`px-4 py-2 text-xs uppercase font-extrabold tracking-wider flex items-center space-x-2 transition-all border ${
-                      activeMediaTab === 'video'
-                        ? 'bg-flow-gold text-white border-flow-gold'
-                        : 'bg-white text-flow-dark border-flow-border hover:border-flow-gold'
-                    }`}
-                  >
-                    <Film className="w-4 h-4" />
-                    <span>Video Tour</span>
-                  </button>
-                  <button
-                    onClick={() => setActiveMediaTab('image')}
-                    className={`px-4 py-2 text-xs uppercase font-extrabold tracking-wider flex items-center space-x-2 transition-all border ${
-                      activeMediaTab === 'image'
-                        ? 'bg-flow-gold text-white border-flow-gold'
-                        : 'bg-white text-flow-dark border-flow-border hover:border-flow-gold'
-                    }`}
-                  >
-                    <Play className="w-4 h-4" />
-                    <span>Photo Gallery</span>
-                  </button>
-                </div>
-              )}
-
-              {/* Main Media Stage */}
+              {/* Video Player */}
               <div className="relative aspect-[4/3] w-full overflow-hidden bg-flow-dark mb-3">
-                {activeMediaTab === 'video' && property.videoUrl ? (
+                {property.videoUrl ? (
                   <video
                     src={property.videoUrl}
                     controls
@@ -80,9 +47,9 @@ export const PropertyModal: React.FC<PropertyModalProps> = ({ property, onClose,
                   />
                 ) : (
                   <img
-                    src={currentImage}
+                    src={property.mainImage}
                     alt={property.title}
-                    className="w-full h-full object-cover transition-all duration-500"
+                    className="w-full h-full object-cover"
                   />
                 )}
 
@@ -90,27 +57,10 @@ export const PropertyModal: React.FC<PropertyModalProps> = ({ property, onClose,
                   {property.status}
                 </span>
               </div>
-
-              {/* Gallery Thumbnails */}
-              {activeMediaTab === 'image' && property.galleryImages && property.galleryImages.length > 1 && (
-                <div className="grid grid-cols-4 gap-2">
-                  {property.galleryImages.map((img, idx) => (
-                    <button
-                      key={idx}
-                      onClick={() => setActiveImageIndex(idx)}
-                      className={`relative aspect-[4/3] overflow-hidden border-2 transition-all ${
-                        activeImageIndex === idx ? 'border-flow-gold opacity-100 scale-102' : 'border-transparent opacity-70 hover:opacity-100'
-                      }`}
-                    >
-                      <img src={img} alt="" className="w-full h-full object-cover" />
-                    </button>
-                  ))}
-                </div>
-              )}
             </div>
 
             {/* Quick Specs Pill */}
-            <div className="mt-6 pt-6 border-t border-flow-border grid grid-cols-3 gap-2 text-center bg-white p-4">
+            <div className="mt-4 pt-4 border-t border-flow-border grid grid-cols-3 gap-2 text-center bg-white p-4">
               {property.bedrooms && (
                 <div>
                   <span className="block text-xs uppercase font-medium text-flow-muted">Bedrooms</span>
