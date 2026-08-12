@@ -12,12 +12,8 @@ const PropertyPageCard: React.FC<{
   property: Property;
   onSelectProperty: (property: Property) => void;
 }> = ({ property, onSelectProperty }) => {
-  const [isHovered, setIsHovered] = useState(false);
-
   return (
     <div
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
       className="group bg-white border border-flow-border hover:border-flow-gold transition-all duration-300 shadow-subtle hover:shadow-elevated flex flex-col justify-between"
     >
       <div>
@@ -27,29 +23,14 @@ const PropertyPageCard: React.FC<{
           className="relative aspect-[4/3] w-full overflow-hidden bg-flow-dark cursor-pointer"
         >
           {property.videoUrl ? (
-            isHovered ? (
-              <video
-                src={property.videoUrl}
-                muted
-                loop
-                playsInline
-                autoPlay
-                className="w-full h-full object-cover"
-              />
-            ) : (
-              // Premium placeholder gradient with play icon to avoid black video frames and loading lag
-              <div className="w-full h-full bg-gradient-to-br from-flow-dark via-[#1e2229] to-flow-dark flex flex-col items-center justify-center text-center p-6 transition-all duration-300">
-                <div className="w-14 h-14 rounded-full bg-flow-gold/10 border border-flow-gold/40 flex items-center justify-center mb-3 group-hover:scale-110 transition-transform duration-300">
-                  <Play className="w-6 h-6 text-flow-gold fill-flow-gold/20 ml-0.5" />
-                </div>
-                <span className="text-xs uppercase font-extrabold tracking-widest text-flow-gold">
-                  Play Video Tour
-                </span>
-                <span className="text-[10px] text-white/50 mt-1">
-                  Hover to view property video
-                </span>
-              </div>
-            )
+            <video
+              src={property.videoUrl}
+              muted
+              loop
+              playsInline
+              autoPlay
+              className="w-full h-full object-cover img-zoom"
+            />
           ) : (
             <img
               src={property.mainImage}
