@@ -11,6 +11,7 @@ export interface Property {
   bathrooms?: number;
   size: string; // e.g. "650 sqm" or "1,200 sqm"
   mainImage: string;
+  videoUrl?: string; // HTML5 Video Tour file URL
   galleryImages: string[];
   description: string;
   features: string[];

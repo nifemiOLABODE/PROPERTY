@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { MapPin, Bed, Bath, Maximize2, ArrowRight } from 'lucide-react';
+import { MapPin, Bed, Bath, Maximize2, ArrowRight, Play } from 'lucide-react';
 import { sampleProperties } from '../data/propertiesData';
 import { Property } from '../types';
 
@@ -63,16 +63,39 @@ export const FeaturedProperties: React.FC<FeaturedPropertiesProps> = ({ onSelect
               className="group bg-white border border-flow-border hover:border-flow-gold transition-all duration-300 shadow-subtle hover:shadow-elevated flex flex-col justify-between"
             >
               <div>
-                {/* Image Box */}
-                <div className="relative aspect-[4/3] w-full overflow-hidden bg-flow-dark">
-                  <img
-                    src={property.mainImage}
-                    alt={property.title}
-                    className="w-full h-full object-cover img-zoom"
-                  />
+                {/* Media Stage / Preview */}
+                <div
+                  onClick={() => onSelectProperty(property)}
+                  className="relative aspect-[4/3] w-full overflow-hidden bg-flow-dark cursor-pointer"
+                >
+                  {property.videoUrl ? (
+                    <video
+                      src={property.videoUrl}
+                      muted
+                      loop
+                      playsInline
+                      autoPlay
+                      className="w-full h-full object-cover img-zoom"
+                    />
+                  ) : (
+                    <img
+                      src={property.mainImage}
+                      alt={property.title}
+                      className="w-full h-full object-cover img-zoom"
+                    />
+                  )}
+
                   <span className="absolute top-4 left-4 bg-flow-dark/90 text-white text-[10px] uppercase font-bold tracking-widest px-3 py-1.5 backdrop-blur-sm border border-white/10">
                     {property.status}
                   </span>
+
+                  {property.videoUrl && (
+                    <span className="absolute top-4 right-4 bg-flow-gold text-white text-[10px] uppercase font-extrabold tracking-widest px-2.5 py-1.5 flex items-center space-x-1 shadow-md">
+                      <Play className="w-3 h-3 fill-current" />
+                      <span>Video Tour</span>
+                    </span>
+                  )}
+
                   <span className="absolute bottom-4 right-4 bg-flow-gold text-white text-[11px] uppercase font-bold tracking-wider px-3 py-1">
                     {property.type}
                   </span>
@@ -125,7 +148,7 @@ export const FeaturedProperties: React.FC<FeaturedPropertiesProps> = ({ onSelect
                   onClick={() => onSelectProperty(property)}
                   className="w-full py-3 bg-flow-sand hover:bg-flow-dark text-flow-dark hover:text-white text-xs uppercase font-semibold tracking-widest transition-all flex items-center justify-center space-x-2 group-hover:border-transparent"
                 >
-                  <span>View Property</span>
+                  <span>View Details & Video Tour</span>
                   <ArrowRight className="w-3.5 h-3.5" />
                 </button>
               </div>

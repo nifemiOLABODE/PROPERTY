@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, MapPin, Bed, Bath, Maximize2, CheckCircle2, MessageSquare, PhoneCall, ChevronRight } from 'lucide-react';
+import { X, MapPin, Bed, Bath, Maximize2, CheckCircle2, MessageSquare, ChevronRight, Play, Film } from 'lucide-react';
 import { Property } from '../types';
 import { companyConfig } from '../data/companyData';
 
@@ -10,6 +10,7 @@ interface PropertyModalProps {
 }
 
 export const PropertyModal: React.FC<PropertyModalProps> = ({ property, onClose, onOpenConsultationWithProperty }) => {
+  const [activeMediaTab, setActiveMediaTab] = useState<'video' | 'image'>('video');
   const [activeImageIndex, setActiveImageIndex] = useState(0);
 
   if (!property) return null;
@@ -34,23 +35,64 @@ export const PropertyModal: React.FC<PropertyModalProps> = ({ property, onClose,
         </button>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-0">
-          {/* Left Column: Gallery */}
+          {/* Left Column: Video & Image Showcase */}
           <div className="lg:col-span-7 bg-flow-sand p-4 sm:p-6 flex flex-col justify-between">
             <div>
-              {/* Main Image Stage */}
+              {/* Media Mode Tabs */}
+              {property.videoUrl && (
+                <div className="flex space-x-2 mb-3">
+                  <button
+                    onClick={() => setActiveMediaTab('video')}
+                    className={`px-4 py-2 text-xs uppercase font-extrabold tracking-wider flex items-center space-x-2 transition-all border ${
+                      activeMediaTab === 'video'
+                        ? 'bg-flow-gold text-white border-flow-gold'
+                        : 'bg-white text-flow-dark border-flow-border hover:border-flow-gold'
+                    }`}
+                  >
+                    <Film className="w-4 h-4" />
+                    <span>Video Tour</span>
+                  </button>
+                  <button
+                    onClick={() => setActiveMediaTab('image')}
+                    className={`px-4 py-2 text-xs uppercase font-extrabold tracking-wider flex items-center space-x-2 transition-all border ${
+                      activeMediaTab === 'image'
+                        ? 'bg-flow-gold text-white border-flow-gold'
+                        : 'bg-white text-flow-dark border-flow-border hover:border-flow-gold'
+                    }`}
+                  >
+                    <Play className="w-4 h-4" />
+                    <span>Photo Gallery</span>
+                  </button>
+                </div>
+              )}
+
+              {/* Main Media Stage */}
               <div className="relative aspect-[4/3] w-full overflow-hidden bg-flow-dark mb-3">
-                <img
-                  src={currentImage}
-                  alt={property.title}
-                  className="w-full h-full object-cover transition-all duration-500"
-                />
-                <span className="absolute top-3 left-3 bg-flow-gold text-white text-[10px] uppercase font-bold tracking-widest px-3 py-1">
+                {activeMediaTab === 'video' && property.videoUrl ? (
+                  <video
+                    src={property.videoUrl}
+                    controls
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <img
+                    src={currentImage}
+                    alt={property.title}
+                    className="w-full h-full object-cover transition-all duration-500"
+                  />
+                )}
+
+                <span className="absolute top-3 left-3 bg-flow-gold text-white text-[10px] uppercase font-bold tracking-widest px-3 py-1 z-10">
                   {property.status}
                 </span>
               </div>
 
-              {/* Thumbnails */}
-              {property.galleryImages && property.galleryImages.length > 1 && (
+              {/* Gallery Thumbnails */}
+              {activeMediaTab === 'image' && property.galleryImages && property.galleryImages.length > 1 && (
                 <div className="grid grid-cols-4 gap-2">
                   {property.galleryImages.map((img, idx) => (
                     <button
@@ -72,23 +114,23 @@ export const PropertyModal: React.FC<PropertyModalProps> = ({ property, onClose,
               {property.bedrooms && (
                 <div>
                   <span className="block text-xs uppercase font-medium text-flow-muted">Bedrooms</span>
-                  <span className="font-serif text-lg font-bold text-flow-dark">{property.bedrooms} Beds</span>
+                  <span className="text-lg font-bold text-flow-dark">{property.bedrooms} Beds</span>
                 </div>
               )}
               {property.bathrooms && (
                 <div>
                   <span className="block text-xs uppercase font-medium text-flow-muted">Bathrooms</span>
-                  <span className="font-serif text-lg font-bold text-flow-dark">{property.bathrooms} Baths</span>
+                  <span className="text-lg font-bold text-flow-dark">{property.bathrooms} Baths</span>
                 </div>
               )}
               <div>
                 <span className="block text-xs uppercase font-medium text-flow-muted">Property Size</span>
-                <span className="font-serif text-lg font-bold text-flow-dark">{property.size}</span>
+                <span className="text-lg font-bold text-flow-dark">{property.size}</span>
               </div>
             </div>
           </div>
 
-          {/* Right Column: Property Information */}
+          {/* Right Column: Property Details & Captions */}
           <div className="lg:col-span-5 p-6 sm:p-8 flex flex-col justify-between">
             <div>
               <div className="flex items-center space-x-2 text-xs font-semibold uppercase tracking-widest text-flow-gold mb-2">
@@ -97,7 +139,7 @@ export const PropertyModal: React.FC<PropertyModalProps> = ({ property, onClose,
                 <span>{property.city}</span>
               </div>
 
-              <h2 className="font-serif text-2xl sm:text-3xl font-bold text-flow-dark leading-tight mb-2">
+              <h2 className="text-2xl sm:text-3xl font-extrabold text-flow-dark leading-tight mb-2">
                 {property.title}
               </h2>
 
@@ -108,14 +150,14 @@ export const PropertyModal: React.FC<PropertyModalProps> = ({ property, onClose,
 
               <div className="mb-6 p-3.5 bg-flow-sand/80 border-l-2 border-flow-gold">
                 <span className="text-xs uppercase font-medium text-flow-muted block">Asking Price</span>
-                <span className="font-serif text-2xl sm:text-3xl font-bold text-flow-dark">
+                <span className="text-2xl sm:text-3xl font-bold text-flow-dark">
                   {property.price}
                 </span>
               </div>
 
               <div className="mb-6">
                 <h3 className="text-xs uppercase font-bold tracking-wider text-flow-dark mb-2">Property Description</h3>
-                <p className="text-sm text-flow-muted leading-relaxed font-light">
+                <p className="text-sm text-flow-muted leading-relaxed font-light whitespace-pre-line">
                   {property.description}
                 </p>
               </div>
@@ -127,7 +169,7 @@ export const PropertyModal: React.FC<PropertyModalProps> = ({ property, onClose,
                   <ul className="grid grid-cols-1 gap-2">
                     {property.features.map((feat, idx) => (
                       <li key={idx} className="flex items-start text-xs text-flow-dark">
-                        <CheckCircle2 className="w-3.5 h-3.5 text-flow-emerald mr-2 mt-0.5 flex-shrink-0" />
+                        <CheckCircle2 className="w-3.5 h-3.5 text-flow-gold mr-2 mt-0.5 flex-shrink-0" />
                         <span>{feat}</span>
                       </li>
                     ))}
@@ -142,7 +184,7 @@ export const PropertyModal: React.FC<PropertyModalProps> = ({ property, onClose,
                 href={whatsappUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full py-3.5 bg-flow-emerald hover:bg-flow-emerald-dark text-white text-xs uppercase font-semibold tracking-widest flex items-center justify-center space-x-2 transition-all"
+                className="w-full py-3.5 bg-[#25D366] hover:bg-[#1ebe57] text-white text-xs uppercase font-extrabold tracking-widest flex items-center justify-center space-x-2 transition-all shadow-sm"
               >
                 <MessageSquare className="w-4 h-4" />
                 <span>Inquire via WhatsApp</span>
@@ -155,7 +197,7 @@ export const PropertyModal: React.FC<PropertyModalProps> = ({ property, onClose,
                     onOpenConsultationWithProperty(property.title);
                   }
                 }}
-                className="w-full py-3.5 bg-flow-dark hover:bg-flow-gold text-white text-xs uppercase font-semibold tracking-widest flex items-center justify-center space-x-2 transition-all"
+                className="w-full py-3.5 bg-flow-dark hover:bg-flow-gold text-white text-xs uppercase font-extrabold tracking-widest flex items-center justify-center space-x-2 transition-all"
               >
                 <span>Request Private Inspection</span>
                 <ChevronRight className="w-4 h-4" />

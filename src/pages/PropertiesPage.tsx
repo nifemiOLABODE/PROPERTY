@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Search, MapPin, Bed, Bath, Maximize2, ArrowRight, Filter, RotateCcw } from 'lucide-react';
+import { Search, MapPin, Bed, Bath, Maximize2, ArrowRight, Filter, RotateCcw, Play } from 'lucide-react';
 import { sampleProperties } from '../data/propertiesData';
 import { Property } from '../types';
 
@@ -68,7 +68,7 @@ export const PropertiesPage: React.FC<PropertiesPageProps> = ({ onSelectProperty
             </div>
             <input
               type="text"
-              placeholder="Search by neighborhood, property title, or keyword (e.g. Maitama, Ikoyi, Duplex, Land)..."
+              placeholder="Search by neighborhood, property title, or keyword (e.g. Guzape, Wuse 2, Apo, Utako)..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="w-full pl-12 pr-4 py-4 bg-flow-sand/80 border border-flow-border text-sm text-flow-dark placeholder-flow-muted/70 focus:outline-none focus:border-flow-gold transition-colors font-medium"
@@ -161,16 +161,39 @@ export const PropertiesPage: React.FC<PropertiesPageProps> = ({ onSelectProperty
                 className="group bg-white border border-flow-border hover:border-flow-gold transition-all duration-300 shadow-subtle hover:shadow-elevated flex flex-col justify-between"
               >
                 <div>
-                  {/* Image Box */}
-                  <div className="relative aspect-[4/3] w-full overflow-hidden bg-flow-dark">
-                    <img
-                      src={property.mainImage}
-                      alt={property.title}
-                      className="w-full h-full object-cover img-zoom"
-                    />
+                  {/* Media Box */}
+                  <div
+                    onClick={() => onSelectProperty(property)}
+                    className="relative aspect-[4/3] w-full overflow-hidden bg-flow-dark cursor-pointer"
+                  >
+                    {property.videoUrl ? (
+                      <video
+                        src={property.videoUrl}
+                        muted
+                        loop
+                        playsInline
+                        autoPlay
+                        className="w-full h-full object-cover img-zoom"
+                      />
+                    ) : (
+                      <img
+                        src={property.mainImage}
+                        alt={property.title}
+                        className="w-full h-full object-cover img-zoom"
+                      />
+                    )}
+
                     <span className="absolute top-4 left-4 bg-flow-dark/90 text-white text-[10px] uppercase font-bold tracking-widest px-3 py-1.5 backdrop-blur-sm border border-white/10">
                       {property.status}
                     </span>
+
+                    {property.videoUrl && (
+                      <span className="absolute top-4 right-4 bg-flow-gold text-white text-[10px] uppercase font-extrabold tracking-widest px-2.5 py-1.5 flex items-center space-x-1 shadow-md">
+                        <Play className="w-3 h-3 fill-current" />
+                        <span>Video Tour</span>
+                      </span>
+                    )}
+
                     <span className="absolute bottom-4 right-4 bg-flow-gold text-white text-[11px] uppercase font-bold tracking-wider px-3 py-1">
                       {property.type}
                     </span>
@@ -223,7 +246,7 @@ export const PropertiesPage: React.FC<PropertiesPageProps> = ({ onSelectProperty
                     onClick={() => onSelectProperty(property)}
                     className="w-full py-3 bg-flow-sand hover:bg-flow-dark text-flow-dark hover:text-white text-xs uppercase font-semibold tracking-widest transition-all flex items-center justify-center space-x-2"
                   >
-                    <span>View Property</span>
+                    <span>View Details & Video Tour</span>
                     <ArrowRight className="w-3.5 h-3.5" />
                   </button>
                 </div>
