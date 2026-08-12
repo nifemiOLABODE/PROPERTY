@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { X, MapPin, CheckCircle2, MessageSquare, ChevronRight, ChevronLeft, Film, Image as ImageIcon } from 'lucide-react';
 import { Property } from '../types';
 import { companyConfig } from '../data/companyData';
@@ -13,23 +13,40 @@ export const PropertyModal: React.FC<PropertyModalProps> = ({ property, onClose,
   const [activeMediaTab, setActiveMediaTab] = useState<'video' | 'image'>('image');
   const [activeImageIndex, setActiveImageIndex] = useState(0);
 
+  // Sync tab state whenever the active property changes
+  useEffect(() => {
+    if (property) {
+      const hasImages = property.galleryImages && property.galleryImages.length > 0;
+      const hasVideo = !!property.videoUrl;
+
+      if (hasVideo && !hasImages) {
+        setActiveMediaTab('video');
+      } else {
+        setActiveMediaTab('image');
+      }
+      setActiveImageIndex(0);
+    }
+  }, [property]);
+
   if (!property) return null;
 
-  // Combine gallery images if populated; fallback to mainImage as single item array
-  const slideshowImages = property.galleryImages && property.galleryImages.length > 0
-    ? property.galleryImages
-    : [property.mainImage];
+  // Filter out empty strings or invalid urls from slideshow images
+  const slideshowImages = property.galleryImages && property.galleryImages.filter(img => !!img).length > 0
+    ? property.galleryImages.filter(img => !!img)
+    : property.mainImage ? [property.mainImage] : [];
 
   const handleNextImage = () => {
+    if (slideshowImages.length === 0) return;
     setActiveImageIndex((prevIdx) => (prevIdx + 1) % slideshowImages.length);
   };
 
   const handlePrevImage = () => {
+    if (slideshowImages.length === 0) return;
     setActiveImageIndex((prevIdx) => (prevIdx - 1 + slideshowImages.length) % slideshowImages.length);
   };
 
-  // Auto-set tab to 'video' if video is present and no gallery images exist, otherwise default to slideshow
   const hasVideo = !!property.videoUrl;
+  const hasImages = slideshowImages.length > 0;
   const hasMultipleImages = slideshowImages.length > 1;
 
   const whatsappMessage = encodeURIComponent(
@@ -54,7 +71,7 @@ export const PropertyModal: React.FC<PropertyModalProps> = ({ property, onClose,
           <div className="lg:col-span-7 bg-flow-sand p-4 sm:p-6 flex flex-col justify-between">
             <div>
               {/* Media Options Tabs if both media types exist */}
-              {hasVideo && (
+              {hasVideo && hasImages && (
                 <div className="flex space-x-2 mb-3">
                   <button
                     onClick={() => setActiveMediaTab('image')}
@@ -95,11 +112,18 @@ export const PropertyModal: React.FC<PropertyModalProps> = ({ property, onClose,
                   />
                 ) : (
                   <div className="relative w-full h-full group">
-                    <img
-                      src={slideshowImages[activeImageIndex]}
-                      alt={`${property.title} - View ${activeImageIndex + 1}`}
-                      className="w-full h-full object-cover transition-all duration-300"
-                    />
+                    {hasImages ? (
+                      <img
+                        src={slideshowImages[activeImageIndex]}
+                        alt={`${property.title} - View ${activeImageIndex + 1}`}
+                        className="w-full h-full object-cover transition-all duration-300"
+                      />
+                    ) : (
+                      // Fallback if no images and no video tab
+                      <div className="w-full h-full bg-flow-dark flex items-center justify-center text-white/50 text-xs">
+                        No image available
+                      </div>
+                    )}
 
                     {/* Slideshow Arrow Left */}
                     {hasMultipleImages && (

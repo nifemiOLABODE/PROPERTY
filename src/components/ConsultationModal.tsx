@@ -171,19 +171,25 @@ export const ConsultationModal: React.FC<ConsultationModalProps> = ({ isOpen, on
                 ></textarea>
               </div>
 
-              <div className="pt-2 flex flex-col sm:flex-row gap-3">
+              <div className="pt-2 flex flex-col gap-3">
                 <button
                   type="submit"
-                  className="flex-1 py-3 bg-flow-gold hover:bg-flow-gold-hover text-white text-xs uppercase font-semibold tracking-widest transition-all"
+                  className="w-full py-3 bg-flow-gold hover:bg-flow-gold-hover text-white text-xs uppercase font-semibold tracking-widest transition-all"
                 >
                   Confirm Consultation Slot
                 </button>
+
+                <div className="flex items-center gap-3">
+                  <div className="flex-1 h-px bg-flow-border"></div>
+                  <span className="text-[11px] text-flow-muted uppercase tracking-wider font-medium">Or send us a WhatsApp message</span>
+                  <div className="flex-1 h-px bg-flow-border"></div>
+                </div>
 
                 <a
                   href={whatsappUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="px-4 py-3 bg-flow-emerald hover:bg-flow-emerald-dark text-white text-xs uppercase font-semibold tracking-widest flex items-center justify-center space-x-1"
+                  className="w-full px-4 py-3 bg-flow-emerald hover:bg-flow-emerald-dark text-white text-xs uppercase font-semibold tracking-widest flex items-center justify-center space-x-1"
                 >
                   <MessageSquare className="w-3.5 h-3.5" />
                   <span>WhatsApp</span>
