@@ -1,5 +1,5 @@
-import React from 'react';
-import { X, MapPin, CheckCircle2, MessageSquare, ChevronRight } from 'lucide-react';
+import React, { useState } from 'react';
+import { X, MapPin, CheckCircle2, MessageSquare, ChevronRight, ChevronLeft, Film, Image as ImageIcon } from 'lucide-react';
 import { Property } from '../types';
 import { companyConfig } from '../data/companyData';
 
@@ -10,7 +10,27 @@ interface PropertyModalProps {
 }
 
 export const PropertyModal: React.FC<PropertyModalProps> = ({ property, onClose, onOpenConsultationWithProperty }) => {
+  const [activeMediaTab, setActiveMediaTab] = useState<'video' | 'image'>('image');
+  const [activeImageIndex, setActiveImageIndex] = useState(0);
+
   if (!property) return null;
+
+  // Combine gallery images if populated; fallback to mainImage as single item array
+  const slideshowImages = property.galleryImages && property.galleryImages.length > 0
+    ? property.galleryImages
+    : [property.mainImage];
+
+  const handleNextImage = () => {
+    setActiveImageIndex((prevIdx) => (prevIdx + 1) % slideshowImages.length);
+  };
+
+  const handlePrevImage = () => {
+    setActiveImageIndex((prevIdx) => (prevIdx - 1 + slideshowImages.length) % slideshowImages.length);
+  };
+
+  // Auto-set tab to 'video' if video is present and no gallery images exist, otherwise default to slideshow
+  const hasVideo = !!property.videoUrl;
+  const hasMultipleImages = slideshowImages.length > 1;
 
   const whatsappMessage = encodeURIComponent(
     `Hello Flow Properties, I am interested in reviewing details for "${property.title}" located in ${property.location} (Listed at ${property.price}). Please share further information.`
@@ -23,19 +43,47 @@ export const PropertyModal: React.FC<PropertyModalProps> = ({ property, onClose,
         {/* Sticky Close Button */}
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 z-20 p-2.5 bg-flow-dark text-white hover:bg-flow-gold transition-colors focus:outline-none"
+          className="absolute top-4 right-4 z-30 p-2.5 bg-flow-dark text-white hover:bg-flow-gold transition-colors focus:outline-none"
           aria-label="Close details"
         >
           <X className="w-5 h-5" />
         </button>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-0">
-          {/* Left Column: Property Video Media */}
+          {/* Left Column: Media Stage (Slideshow & Video) */}
           <div className="lg:col-span-7 bg-flow-sand p-4 sm:p-6 flex flex-col justify-between">
             <div>
-              {/* Video Player */}
-              <div className="relative aspect-[4/3] w-full overflow-hidden bg-flow-dark mb-3">
-                {property.videoUrl ? (
+              {/* Media Options Tabs if both media types exist */}
+              {hasVideo && (
+                <div className="flex space-x-2 mb-3">
+                  <button
+                    onClick={() => setActiveMediaTab('image')}
+                    className={`px-4 py-2 text-xs uppercase font-extrabold tracking-wider flex items-center space-x-2 transition-all border ${
+                      activeMediaTab === 'image'
+                        ? 'bg-flow-gold text-white border-flow-gold'
+                        : 'bg-white text-flow-dark border-flow-border hover:border-flow-gold'
+                    }`}
+                  >
+                    <ImageIcon className="w-4 h-4" />
+                    <span>Photo Slideshow</span>
+                  </button>
+                  <button
+                    onClick={() => setActiveMediaTab('video')}
+                    className={`px-4 py-2 text-xs uppercase font-extrabold tracking-wider flex items-center space-x-2 transition-all border ${
+                      activeMediaTab === 'video'
+                        ? 'bg-flow-gold text-white border-flow-gold'
+                        : 'bg-white text-flow-dark border-flow-border hover:border-flow-gold'
+                    }`}
+                  >
+                    <Film className="w-4 h-4" />
+                    <span>Video Tour</span>
+                  </button>
+                </div>
+              )}
+
+              {/* Main Media Stage */}
+              <div className="relative aspect-[4/3] w-full overflow-hidden bg-flow-dark mb-3 select-none">
+                {activeMediaTab === 'video' && property.videoUrl ? (
                   <video
                     src={property.videoUrl}
                     controls
@@ -46,17 +94,65 @@ export const PropertyModal: React.FC<PropertyModalProps> = ({ property, onClose,
                     className="w-full h-full object-cover"
                   />
                 ) : (
-                  <img
-                    src={property.mainImage}
-                    alt={property.title}
-                    className="w-full h-full object-cover"
-                  />
+                  <div className="relative w-full h-full group">
+                    <img
+                      src={slideshowImages[activeImageIndex]}
+                      alt={`${property.title} - View ${activeImageIndex + 1}`}
+                      className="w-full h-full object-cover transition-all duration-300"
+                    />
+
+                    {/* Slideshow Arrow Left */}
+                    {hasMultipleImages && (
+                      <button
+                        onClick={handlePrevImage}
+                        className="absolute left-3 top-1/2 -translate-y-1/2 bg-black/70 hover:bg-flow-gold text-white p-2.5 transition-colors focus:outline-none z-10"
+                        aria-label="Previous image"
+                      >
+                        <ChevronLeft className="w-5 h-5" />
+                      </button>
+                    )}
+
+                    {/* Slideshow Arrow Right */}
+                    {hasMultipleImages && (
+                      <button
+                        onClick={handleNextImage}
+                        className="absolute right-3 top-1/2 -translate-y-1/2 bg-black/70 hover:bg-flow-gold text-white p-2.5 transition-colors focus:outline-none z-10"
+                        aria-label="Next image"
+                      >
+                        <ChevronRight className="w-5 h-5" />
+                      </button>
+                    )}
+
+                    {/* Index Indicator Pill */}
+                    {hasMultipleImages && (
+                      <div className="absolute bottom-3 left-1/2 -translate-x-1/2 bg-black/70 text-white text-[11px] font-bold px-3.5 py-1.5 rounded-none z-10">
+                        {activeImageIndex + 1} / {slideshowImages.length}
+                      </div>
+                    )}
+                  </div>
                 )}
 
-                <span className="absolute top-3 left-3 bg-flow-gold text-white text-[10px] uppercase font-bold tracking-widest px-3 py-1 z-10">
+                <span className="absolute top-3 left-3 bg-flow-gold text-white text-[10px] uppercase font-bold tracking-widest px-3 py-1 z-20">
                   {property.status}
                 </span>
               </div>
+
+              {/* Thumbnails Row under Slideshow for easy jump-to-index */}
+              {activeMediaTab === 'image' && hasMultipleImages && (
+                <div className="flex space-x-2 overflow-x-auto py-1 scrollbar-thin">
+                  {slideshowImages.map((img, idx) => (
+                    <button
+                      key={idx}
+                      onClick={() => setActiveImageIndex(idx)}
+                      className={`relative w-16 h-12 flex-shrink-0 overflow-hidden border-2 transition-all ${
+                        activeImageIndex === idx ? 'border-flow-gold opacity-100 scale-102' : 'border-transparent opacity-60 hover:opacity-100'
+                      }`}
+                    >
+                      <img src={img} alt="" className="w-full h-full object-cover" />
+                    </button>
+                  ))}
+                </div>
+              )}
             </div>
 
             {/* Quick Specs Pill */}
@@ -99,7 +195,7 @@ export const PropertyModal: React.FC<PropertyModalProps> = ({ property, onClose,
               </div>
 
               <div className="mb-6 p-3.5 bg-flow-sand/80 border-l-2 border-flow-gold">
-                <span className="text-xs uppercase font-medium text-flow-muted block">Asking Price</span>
+                <span className="text-xs uppercase font-medium text-flow-muted block">Price</span>
                 <span className="text-2xl sm:text-3xl font-bold text-flow-dark">
                   {property.price}
                 </span>

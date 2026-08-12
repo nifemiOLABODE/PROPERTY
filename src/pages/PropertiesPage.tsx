@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Search, MapPin, Bed, Bath, Maximize2, ArrowRight, Filter, RotateCcw, Play } from 'lucide-react';
+import { Search, MapPin, Bed, Bath, Maximize2, ArrowRight, Filter, RotateCcw, Play, Image as ImageIcon } from 'lucide-react';
 import { sampleProperties } from '../data/propertiesData';
 import { Property } from '../types';
 
@@ -75,7 +75,7 @@ export const PropertiesPage: React.FC<PropertiesPageProps> = ({ onSelectProperty
             />
           </div>
 
-          {/* Secondary Dropdowns & Quick Categories */}
+          {/* Dropdowns & Controls */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2 border-t border-flow-border/60">
             <div>
               <label className="block text-[11px] uppercase font-bold tracking-wider text-flow-dark mb-1.5">
@@ -187,10 +187,15 @@ export const PropertiesPage: React.FC<PropertiesPageProps> = ({ onSelectProperty
                       {property.status}
                     </span>
 
-                    {property.videoUrl && (
+                    {property.videoUrl ? (
                       <span className="absolute top-4 right-4 bg-flow-gold text-white text-[10px] uppercase font-extrabold tracking-widest px-2.5 py-1.5 flex items-center space-x-1 shadow-md">
                         <Play className="w-3 h-3 fill-current" />
                         <span>Video Tour</span>
+                      </span>
+                    ) : (
+                      <span className="absolute top-4 right-4 bg-flow-gold text-white text-[10px] uppercase font-extrabold tracking-widest px-2.5 py-1.5 flex items-center space-x-1 shadow-md">
+                        <ImageIcon className="w-3 h-3" />
+                        <span>Image Tour</span>
                       </span>
                     )}
 
@@ -232,7 +237,7 @@ export const PropertiesPage: React.FC<PropertiesPageProps> = ({ onSelectProperty
 
                     {/* Price */}
                     <div className="flex items-baseline justify-between">
-                      <span className="text-[11px] uppercase tracking-wider text-flow-muted">Guide Price</span>
+                      <span className="text-[11px] uppercase tracking-wider text-flow-muted">Price</span>
                       <span className="text-xl font-bold text-flow-dark">
                         {property.price}
                       </span>
@@ -246,7 +251,7 @@ export const PropertiesPage: React.FC<PropertiesPageProps> = ({ onSelectProperty
                     onClick={() => onSelectProperty(property)}
                     className="w-full py-3 bg-flow-sand hover:bg-flow-dark text-flow-dark hover:text-white text-xs uppercase font-semibold tracking-widest transition-all flex items-center justify-center space-x-2"
                   >
-                    <span>View Details & Video Tour</span>
+                    <span>{property.videoUrl ? 'View Details & Video Tour' : 'View Details & Image Tour'}</span>
                     <ArrowRight className="w-3.5 h-3.5" />
                   </button>
                 </div>

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { MapPin, Bed, Bath, Maximize2, ArrowRight, Play } from 'lucide-react';
+import { MapPin, Bed, Bath, Maximize2, ArrowRight, Play, Image as ImageIcon } from 'lucide-react';
 import { sampleProperties } from '../data/propertiesData';
 import { Property } from '../types';
 
@@ -11,14 +11,17 @@ interface FeaturedPropertiesProps {
 export const FeaturedProperties: React.FC<FeaturedPropertiesProps> = ({ onSelectProperty }) => {
   const [activeFilter, setActiveFilter] = useState<'All' | 'Abuja' | 'Lagos' | 'Residential' | 'Land'>('All');
 
-  const filteredProperties = sampleProperties.filter((item) => {
-    if (activeFilter === 'All') return true;
-    if (activeFilter === 'Abuja') return item.city === 'Abuja';
-    if (activeFilter === 'Lagos') return item.city === 'Lagos';
-    if (activeFilter === 'Residential') return item.type === 'Residential' || item.type === 'Luxury Residence';
-    if (activeFilter === 'Land') return item.type === 'Land';
-    return true;
-  });
+  // Home page strictly shows at most 6 properties
+  const filteredProperties = sampleProperties
+    .filter((item) => {
+      if (activeFilter === 'All') return true;
+      if (activeFilter === 'Abuja') return item.city === 'Abuja';
+      if (activeFilter === 'Lagos') return item.city === 'Lagos';
+      if (activeFilter === 'Residential') return item.type === 'Residential' || item.type === 'Luxury Residence';
+      if (activeFilter === 'Land') return item.type === 'Land';
+      return true;
+    })
+    .slice(0, 6);
 
   return (
     <section id="properties" className="py-24 bg-flow-cream border-b border-flow-border">
@@ -55,7 +58,7 @@ export const FeaturedProperties: React.FC<FeaturedPropertiesProps> = ({ onSelect
           </div>
         </div>
 
-        {/* Property Grid */}
+        {/* Property Grid (Max 6) */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {filteredProperties.map((property) => (
             <div
@@ -89,10 +92,15 @@ export const FeaturedProperties: React.FC<FeaturedPropertiesProps> = ({ onSelect
                     {property.status}
                   </span>
 
-                  {property.videoUrl && (
+                  {property.videoUrl ? (
                     <span className="absolute top-4 right-4 bg-flow-gold text-white text-[10px] uppercase font-extrabold tracking-widest px-2.5 py-1.5 flex items-center space-x-1 shadow-md">
                       <Play className="w-3 h-3 fill-current" />
                       <span>Video Tour</span>
+                    </span>
+                  ) : (
+                    <span className="absolute top-4 right-4 bg-flow-gold text-white text-[10px] uppercase font-extrabold tracking-widest px-2.5 py-1.5 flex items-center space-x-1 shadow-md">
+                      <ImageIcon className="w-3 h-3" />
+                      <span>Image Tour</span>
                     </span>
                   )}
 
@@ -134,7 +142,7 @@ export const FeaturedProperties: React.FC<FeaturedPropertiesProps> = ({ onSelect
 
                   {/* Price */}
                   <div className="flex items-baseline justify-between">
-                    <span className="text-[11px] uppercase tracking-wider text-flow-muted">Guide Price</span>
+                    <span className="text-[11px] uppercase tracking-wider text-flow-muted">Price</span>
                     <span className="text-xl font-bold text-flow-dark">
                       {property.price}
                     </span>
@@ -148,7 +156,7 @@ export const FeaturedProperties: React.FC<FeaturedPropertiesProps> = ({ onSelect
                   onClick={() => onSelectProperty(property)}
                   className="w-full py-3 bg-flow-sand hover:bg-flow-dark text-flow-dark hover:text-white text-xs uppercase font-semibold tracking-widest transition-all flex items-center justify-center space-x-2 group-hover:border-transparent"
                 >
-                  <span>View Details & Video Tour</span>
+                  <span>{property.videoUrl ? 'View Details & Video Tour' : 'View Details & Image Tour'}</span>
                   <ArrowRight className="w-3.5 h-3.5" />
                 </button>
               </div>
@@ -162,7 +170,7 @@ export const FeaturedProperties: React.FC<FeaturedPropertiesProps> = ({ onSelect
             to="/properties"
             className="inline-flex items-center space-x-3 px-8 py-4 bg-flow-dark hover:bg-flow-gold text-white text-xs uppercase font-semibold tracking-widest transition-all shadow-subtle"
           >
-            <span>View All Properties</span>
+            <span>Explore All Properties</span>
             <ArrowRight className="w-4 h-4" />
           </Link>
         </div>
