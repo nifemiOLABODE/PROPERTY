@@ -7,6 +7,133 @@ interface PropertiesPageProps {
   onSelectProperty: (property: Property) => void;
 }
 
+// Sub-component for individual Property Card to manage hover and play states cleanly
+const PropertyPageCard: React.FC<{
+  property: Property;
+  onSelectProperty: (property: Property) => void;
+}> = ({ property, onSelectProperty }) => {
+  const [isHovered, setIsHovered] = useState(false);
+
+  return (
+    <div
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      className="group bg-white border border-flow-border hover:border-flow-gold transition-all duration-300 shadow-subtle hover:shadow-elevated flex flex-col justify-between"
+    >
+      <div>
+        {/* Media Box */}
+        <div
+          onClick={() => onSelectProperty(property)}
+          className="relative aspect-[4/3] w-full overflow-hidden bg-flow-dark cursor-pointer"
+        >
+          {property.videoUrl ? (
+            isHovered ? (
+              <video
+                src={property.videoUrl}
+                muted
+                loop
+                playsInline
+                autoPlay
+                className="w-full h-full object-cover"
+              />
+            ) : (
+              // Premium placeholder gradient with play icon to avoid black video frames and loading lag
+              <div className="w-full h-full bg-gradient-to-br from-flow-dark via-[#1e2229] to-flow-dark flex flex-col items-center justify-center text-center p-6 transition-all duration-300">
+                <div className="w-14 h-14 rounded-full bg-flow-gold/10 border border-flow-gold/40 flex items-center justify-center mb-3 group-hover:scale-110 transition-transform duration-300">
+                  <Play className="w-6 h-6 text-flow-gold fill-flow-gold/20 ml-0.5" />
+                </div>
+                <span className="text-xs uppercase font-extrabold tracking-widest text-flow-gold">
+                  Play Video Tour
+                </span>
+                <span className="text-[10px] text-white/50 mt-1">
+                  Hover to view property video
+                </span>
+              </div>
+            )
+          ) : (
+            <img
+              src={property.mainImage}
+              alt={property.title}
+              className="w-full h-full object-cover img-zoom"
+            />
+          )}
+
+          <span className="absolute top-4 left-4 bg-flow-dark/90 text-white text-[10px] uppercase font-bold tracking-widest px-3 py-1.5 backdrop-blur-sm border border-white/10">
+            {property.status}
+          </span>
+
+          {property.videoUrl ? (
+            <span className="absolute top-4 right-4 bg-flow-gold text-white text-[10px] uppercase font-extrabold tracking-widest px-2.5 py-1.5 flex items-center space-x-1 shadow-md">
+              <Play className="w-3 h-3 fill-current" />
+              <span>Video Tour</span>
+            </span>
+          ) : (
+            <span className="absolute top-4 right-4 bg-flow-gold text-white text-[10px] uppercase font-extrabold tracking-widest px-2.5 py-1.5 flex items-center space-x-1 shadow-md">
+              <ImageIcon className="w-3 h-3" />
+              <span>Image Tour</span>
+            </span>
+          )}
+
+          <span className="absolute bottom-4 right-4 bg-flow-gold text-white text-[11px] uppercase font-bold tracking-wider px-3 py-1">
+            {property.type}
+          </span>
+        </div>
+
+        {/* Card Content */}
+        <div className="p-6">
+          <div className="flex items-center text-xs text-flow-muted mb-2">
+            <MapPin className="w-3.5 h-3.5 text-flow-gold mr-1 flex-shrink-0" />
+            <span>{property.location}</span>
+          </div>
+
+          <h3 className="text-xl font-bold text-flow-dark mb-3 line-clamp-2 group-hover:text-flow-gold transition-colors">
+            {property.title}
+          </h3>
+
+          {/* Specs */}
+          <div className="flex items-center justify-between py-3 border-y border-flow-border/60 text-xs text-flow-muted mb-4">
+            {property.bedrooms !== undefined && (
+              <div className="flex items-center space-x-1">
+                <Bed className="w-4 h-4 text-flow-dark" />
+                <span>{property.bedrooms} Beds</span>
+              </div>
+            )}
+            {property.bathrooms !== undefined && (
+              <div className="flex items-center space-x-1">
+                <Bath className="w-4 h-4 text-flow-dark" />
+                <span>{property.bathrooms} Baths</span>
+              </div>
+            )}
+            <div className="flex items-center space-x-1">
+              <Maximize2 className="w-3.5 h-3.5 text-flow-dark" />
+              <span>{property.size}</span>
+            </div>
+          </div>
+
+          {/* Price */}
+          <div className="flex items-baseline justify-between">
+            <span className="text-[11px] uppercase tracking-wider text-flow-muted">Price</span>
+            <span className="text-xl font-bold text-flow-dark">
+              {property.price}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      {/* Button */}
+      <div className="p-6 pt-0">
+        <button
+          onClick={() => onSelectProperty(property)}
+          className="w-full py-3 bg-flow-sand hover:bg-flow-dark text-flow-dark hover:text-white text-xs uppercase font-semibold tracking-widest transition-all flex items-center justify-center space-x-2"
+        >
+          <span>{property.videoUrl ? 'View Details & Video Tour' : 'View Details & Image Tour'}</span>
+          <ArrowRight className="w-3.5 h-3.5" />
+        </button>
+      </div>
+    </div>
+  );
+};
+
 export const PropertiesPage: React.FC<PropertiesPageProps> = ({ onSelectProperty }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCity, setSelectedCity] = useState<string>('All');
@@ -156,113 +283,11 @@ export const PropertiesPage: React.FC<PropertiesPageProps> = ({ onSelectProperty
         {filteredProperties.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {filteredProperties.map((property) => (
-              <div
+              <PropertyPageCard
                 key={property.id}
-                className="group bg-white border border-flow-border hover:border-flow-gold transition-all duration-300 shadow-subtle hover:shadow-elevated flex flex-col justify-between"
-              >
-                <div>
-                  {/* Media Box */}
-                  <div
-                    onClick={() => onSelectProperty(property)}
-                    className="relative aspect-[4/3] w-full overflow-hidden bg-flow-dark cursor-pointer"
-                  >
-                    {property.videoUrl ? (
-                      <video
-                        src={property.videoUrl}
-                        muted
-                        loop
-                        playsInline
-                        preload="metadata"
-                        className="w-full h-full object-cover img-zoom"
-                        onMouseEnter={(e) => {
-                          e.currentTarget.play().catch(() => {});
-                        }}
-                        onMouseLeave={(e) => {
-                          e.currentTarget.pause();
-                          e.currentTarget.currentTime = 0;
-                        }}
-                      />
-                    ) : (
-                      <img
-                        src={property.mainImage}
-                        alt={property.title}
-                        className="w-full h-full object-cover img-zoom"
-                      />
-                    )}
-
-                    <span className="absolute top-4 left-4 bg-flow-dark/90 text-white text-[10px] uppercase font-bold tracking-widest px-3 py-1.5 backdrop-blur-sm border border-white/10">
-                      {property.status}
-                    </span>
-
-                    {property.videoUrl ? (
-                      <span className="absolute top-4 right-4 bg-flow-gold text-white text-[10px] uppercase font-extrabold tracking-widest px-2.5 py-1.5 flex items-center space-x-1 shadow-md">
-                        <Play className="w-3 h-3 fill-current" />
-                        <span>Video Tour</span>
-                      </span>
-                    ) : (
-                      <span className="absolute top-4 right-4 bg-flow-gold text-white text-[10px] uppercase font-extrabold tracking-widest px-2.5 py-1.5 flex items-center space-x-1 shadow-md">
-                        <ImageIcon className="w-3 h-3" />
-                        <span>Image Tour</span>
-                      </span>
-                    )}
-
-                    <span className="absolute bottom-4 right-4 bg-flow-gold text-white text-[11px] uppercase font-bold tracking-wider px-3 py-1">
-                      {property.type}
-                    </span>
-                  </div>
-
-                  {/* Card Content */}
-                  <div className="p-6">
-                    <div className="flex items-center text-xs text-flow-muted mb-2">
-                      <MapPin className="w-3.5 h-3.5 text-flow-gold mr-1 flex-shrink-0" />
-                      <span>{property.location}</span>
-                    </div>
-
-                    <h3 className="text-xl font-bold text-flow-dark mb-3 line-clamp-2 group-hover:text-flow-gold transition-colors">
-                      {property.title}
-                    </h3>
-
-                    {/* Specs */}
-                    <div className="flex items-center justify-between py-3 border-y border-flow-border/60 text-xs text-flow-muted mb-4">
-                      {property.bedrooms !== undefined && (
-                        <div className="flex items-center space-x-1">
-                          <Bed className="w-4 h-4 text-flow-dark" />
-                          <span>{property.bedrooms} Beds</span>
-                        </div>
-                      )}
-                      {property.bathrooms !== undefined && (
-                        <div className="flex items-center space-x-1">
-                          <Bath className="w-4 h-4 text-flow-dark" />
-                          <span>{property.bathrooms} Baths</span>
-                        </div>
-                      )}
-                      <div className="flex items-center space-x-1">
-                        <Maximize2 className="w-3.5 h-3.5 text-flow-dark" />
-                        <span>{property.size}</span>
-                      </div>
-                    </div>
-
-                    {/* Price */}
-                    <div className="flex items-baseline justify-between">
-                      <span className="text-[11px] uppercase tracking-wider text-flow-muted">Price</span>
-                      <span className="text-xl font-bold text-flow-dark">
-                        {property.price}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Button */}
-                <div className="p-6 pt-0">
-                  <button
-                    onClick={() => onSelectProperty(property)}
-                    className="w-full py-3 bg-flow-sand hover:bg-flow-dark text-flow-dark hover:text-white text-xs uppercase font-semibold tracking-widest transition-all flex items-center justify-center space-x-2"
-                  >
-                    <span>{property.videoUrl ? 'View Details & Video Tour' : 'View Details & Image Tour'}</span>
-                    <ArrowRight className="w-3.5 h-3.5" />
-                  </button>
-                </div>
-              </div>
+                property={property}
+                onSelectProperty={onSelectProperty}
+              />
             ))}
           </div>
         ) : (
