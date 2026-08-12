@@ -138,9 +138,14 @@ const FeaturedPropertyCard: React.FC<{
 export const FeaturedProperties: React.FC<FeaturedPropertiesProps> = ({ onSelectProperty }) => {
   const [activeFilter, setActiveFilter] = useState<'All' | 'Abuja' | 'Lagos' | 'Residential' | 'Land'>('All');
 
-  // Home page strictly shows at most 6 properties
+  // Home page strictly shows at most 6 properties that have images
   const filteredProperties = sampleProperties
     .filter((item) => {
+      // Must have images and NO video
+      const hasImages = !!item.mainImage || (item.galleryImages && item.galleryImages.length > 0);
+      const hasVideo = !!item.videoUrl;
+      if (!hasImages || hasVideo) return false;
+
       if (activeFilter === 'All') return true;
       if (activeFilter === 'Abuja') return item.city === 'Abuja';
       if (activeFilter === 'Lagos') return item.city === 'Lagos';
@@ -186,15 +191,23 @@ export const FeaturedProperties: React.FC<FeaturedPropertiesProps> = ({ onSelect
         </div>
 
         {/* Property Grid (Max 6) */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {filteredProperties.map((property) => (
-            <FeaturedPropertyCard
-              key={property.id}
-              property={property}
-              onSelectProperty={onSelectProperty}
-            />
-          ))}
-        </div>
+        {filteredProperties.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {filteredProperties.map((property) => (
+              <FeaturedPropertyCard
+                key={property.id}
+                property={property}
+                onSelectProperty={onSelectProperty}
+              />
+            ))}
+          </div>
+        ) : (
+          <div className="text-center py-12 bg-white border border-flow-border/80">
+            <span className="text-xs text-flow-muted uppercase tracking-wider font-semibold">
+              No featured properties with photo catalogs found in this category
+            </span>
+          </div>
+        )}
 
         {/* View All Properties Bottom Action — Links to /properties */}
         <div className="mt-16 text-center">
