@@ -179,10 +179,8 @@ export const ConsultationModal: React.FC<ConsultationModalProps> = ({ isOpen, on
                   Confirm Consultation Slot
                 </button>
 
-                <div className="flex items-center gap-3">
-                  <div className="flex-1 h-px bg-flow-border"></div>
-                  <span className="text-[11px] text-flow-muted uppercase tracking-wider font-medium">Or send us a WhatsApp message</span>
-                  <div className="flex-1 h-px bg-flow-border"></div>
+                <div className="text-center py-1">
+                  <span className="text-[11px] text-flow-muted uppercase tracking-wider font-semibold">Or send us a WhatsApp message</span>
                 </div>
 
                 <a

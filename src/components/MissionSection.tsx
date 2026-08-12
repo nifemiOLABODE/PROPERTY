@@ -28,7 +28,7 @@ export const MissionSection: React.FC = () => {
             </p>
 
             <p className="text-sm sm:text-base text-white/70 font-light leading-relaxed">
-              We believe that real estate is more than just square footage — it is about creating value, securing futures, and building enduring communities in Abuja and Lagos.
+              We believe that real estate is more than just square footage; it is about creating value, securing futures, and building enduring communities in Abuja and Lagos.
             </p>
           </div>
 

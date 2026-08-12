@@ -77,8 +77,15 @@ export const FeaturedProperties: React.FC<FeaturedPropertiesProps> = ({ onSelect
                       muted
                       loop
                       playsInline
-                      autoPlay
+                      preload="metadata"
                       className="w-full h-full object-cover img-zoom"
+                      onMouseEnter={(e) => {
+                        e.currentTarget.play().catch(() => {});
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.pause();
+                        e.currentTarget.currentTime = 0;
+                      }}
                     />
                   ) : (
                     <img

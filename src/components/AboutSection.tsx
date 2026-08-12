@@ -35,7 +35,7 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ onOpenConsultation }
                 {companyConfig.legalName}
               </p>
               <p className="text-[10px] sm:text-xs text-white/80 font-bold uppercase tracking-wider">
-                {companyConfig.rcNumber} — CAC Registered
+                {companyConfig.rcNumber} (CAC Registered)
               </p>
             </div>
           </div>
