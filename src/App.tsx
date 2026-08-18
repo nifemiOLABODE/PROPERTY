@@ -10,6 +10,7 @@ import { PropertiesPage } from './pages/PropertiesPage';
 import { AboutPage } from './pages/AboutPage';
 import { ServicesPage } from './pages/ServicesPage';
 import { ContactPage } from './pages/ContactPage';
+import { PrivacyPolicyPage } from './pages/PrivacyPolicyPage';
 import { WhatsAppButton } from './components/WhatsAppButton';
 import { Property } from './types';
 
@@ -86,6 +87,10 @@ export function AppContent() {
             <Route
               path="/contact"
               element={<ContactPage />}
+            />
+            <Route
+              path="/privacy-policy"
+              element={<PrivacyPolicyPage />}
             />
           </Routes>
         </PageTransition>

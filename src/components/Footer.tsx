@@ -203,6 +203,16 @@ export const Footer: React.FC = () => {
           </button>
         </div>
 
+        {/* Privacy Policy Link */}
+        <div className="pt-6 text-center">
+          <Link
+            to="/privacy-policy"
+            className="text-[11px] text-white/40 hover:text-flow-gold transition-colors"
+          >
+            Privacy Policy
+          </Link>
+        </div>
+
       </div>
     </footer>
   );
