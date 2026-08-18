@@ -10,7 +10,7 @@ export const companyConfig: CompanyConfig = {
   ],
   whatsappNumber: "2347085575255",
   whatsappDisplay: "+234 708 557 5255",
-  email: "pappyjide01@gmail.com",
+  email: "info@flowproperty.ng",
   addresses: [
     {
       label: "Abuja Office",
